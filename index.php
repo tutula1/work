@@ -2,6 +2,20 @@
 @session_start();
 include_once ("database.php");
 $data = new database();
+if(isset($_SESSION['mail']))
+{
+    $sql =  "select * from `account` where `mail_acc` = '".$_SESSION['mail']."' and `test` = '1'";
+    $dttest = $data->ExcuteObjectList($sql);
+    if(count($dttest) == 0 )
+    {
+        ?>
+        <script>
+            top.location = "test.php";
+        </script>
+        <?php
+        exit();
+    }
+}
 function isValidEmail($email)
 {
     return filter_var($email, FILTER_VALIDATE_EMAIL);
@@ -42,6 +56,14 @@ if (isset($_POST['signin'])) {
                 echo "login success!!!";
                 $_SESSION['name'] = $dtacc[0]['name_acc'];
                 $_SESSION['mail'] = $mail;
+                if($dtacc[0]['test'] == 0)
+                {
+                ?>
+                <script>
+                    top.location = "test.php";
+                </script>
+                <?php
+                }
             } else {
                 echo "login failed";
             }
@@ -132,14 +154,18 @@ if (isset($_POST['signup'])) {
 <head></head>
 <body>
 <h3>Home</h3>
-
+<?php
+if (isset($_SESSION['mail'])) {
+?>
 <a href="index.php">Home</a> &gt; 
+<a href="test">Test</a> |
 <a href="vingle">Vingle</a> |
 <a href="source">Source</a> |
 <a href="promotion">Promotion</a> |
 <a href="payment">Payment</a>
 <hr />
 <?php
+}
 if (!isset($_SESSION['name'])) {
     echo "You are not logged in";
 } else {
