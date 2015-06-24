@@ -1,5 +1,5 @@
 <?php
 class Cadi
  {
-  var a;  
+  //test 1
 } 
