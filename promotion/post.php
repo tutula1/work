@@ -39,9 +39,21 @@
             $time = $_POST['time'];
             $data->ExcuteNonquery("INSERT INTO `promotion`(`id_promotion`, `link_promotion`, `date`, `type`, `key`, `user`) VALUES (NULL, '$url', '$time', '0', '$key', '$acc')");
         }
-        
-        
-        $sql = "Select * FROM censor_card as a WHEre NOT EXISTS(Select * FROM promotion as b WHERE a.key = b.key)";
+        $one = 20;
+        $sql = "Select * FROM censor_card as a WHEre NOT EXISTS(Select * FROM promotion as b WHERE a.key = b.key) order by `create` desc";
+        $dtcard = $data->ExcuteObjectList($sql);
+        $allcard = count($dtcard);
+        $allp = $allcard % $one != 0 ? ($allcard/$one) +1 : ($allcard/$one);
+        if(!isset($_POST['page']))
+        {
+            $p = 1;
+        }
+        else
+        {
+            $p = $_POST['page'];
+        }
+        $start = ($p - 1)*$one;
+        $sql = "Select * FROM censor_card as a WHEre NOT EXISTS(Select * FROM promotion as b WHERE a.key = b.key) order by `create` desc limit $start,$one";
         $dtcard = $data->ExcuteObjectList($sql);
         $count_card = count($dtcard);
         for($j = 0; $j < $count_card; $j++)
@@ -76,7 +88,11 @@
         ?>
 		</tbody>
 	</table>
-
+    <br />
+    <b><?php echo $p?></b>
+    <?php
+    
+    ?>
 <br />
 <?php
 if(isset($_POST['post']))
