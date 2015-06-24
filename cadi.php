@@ -1,5 +1,5 @@
 <?php
-class Cadi()
+class Cadi
 {
     
 } 
