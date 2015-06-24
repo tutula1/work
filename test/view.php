@@ -90,9 +90,7 @@ if (isset($_POST['view'])) {
 <td style="width: 35%;">
 <b>
 <?php
-echo $dtq[$i]['question']; 
-
-
+echo $dtq[$i]['question'];  
 ?>
 </b>
 </td>
